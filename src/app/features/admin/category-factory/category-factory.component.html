@@ -1,0 +1,159 @@
+<div class="container__category-factory overflow-x-auto">
+  <div class="p-4 bg-white rounded-lg shadow">
+    <h2 class="text-xl font-semibold mb-4">Category Factory</h2>
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+      <div class="flex items-center space-x-2">
+        <input type="text"
+              placeholder="Search categories"
+              class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              [(ngModel)]="searchText"
+              (input)="applyFilters()">
+      </div>
+      <div class="flex items-center space-x-2">
+        <button (click)="openAddCategoryModal()" class="btn-add px-3 py-2 text-white rounded-md transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn__plus-svg inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          New
+        </button>
+        <button (click)="deleteSelectedCategories()"
+                [disabled]="selectedCategories.length === 0"
+                class="px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y bg-white">
+        <thead>
+          <tr class="bg-gray-100 border-b">
+            <th class="w-12">
+              <input type="checkbox"
+              [checked]="isAllSelected()"
+              (change)="toggleSelectAll()"
+              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"></th>
+            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">Category</th>
+            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">Icon</th>
+            <!-- <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">Created At</th>
+            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">Updated At</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let cat of filteredCategories; let i = index">
+            <tr class="border-b hover:bg-gray-50 cursor-pointer" [class.bg-blue-50]="expandedIndex === i" (click)="toggleRow(i, $event)">
+              <td class="px-4 py-3 text-center" (click)="$event.stopPropagation()">
+                <input type="checkbox"
+                      [checked]="isSelected(cat)"
+                      (change)="toggleSelect(cat)"
+                      class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out">
+              </td>
+              <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ cat.nameCategory }}</td>
+              <td class="px-4 py-3 text-sm text-gray-700">
+                <i class="fa-solid" [ngClass]="cat.iconClass"></i>
+                <span class="ml-2">{{ cat.iconClass }}</span>
+              </td>
+              <!-- <td class="px-4 py-3 text-sm text-gray-700">{{ cat.createdAt | date:'short' }}</td>
+              <td class="px-4 py-3 text-sm text-gray-700">{{ cat.updatedAt | date:'short' }}</td> -->
+            </tr>
+            <tr *ngIf="expandedIndex === i">
+              <td colspan="5" class="bg-gray-50 px-4 py-4">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h3 class="text-lg font-semibold mb-2">{{ cat.nameCategory }}</h3>
+                    <p class="text-gray-600 mb-2">Icon: <i class="fa-solid" [ngClass]="cat.iconClass"></i> {{ cat.iconClass }}</p>
+                    <p class="text-gray-600 mb-2">Created: {{ cat.createdAt | date:'medium' }}</p>
+                    <p class="text-gray-600 mb-2">Updated: {{ cat.updatedAt | date:'medium' }}</p>
+                  </div>
+                  <div class="flex space-x-3">
+                    <button (click)="editCategory(cat); $event.stopPropagation()" class="btn-edit px-4 py-2 bg-blue-600 text-white rounded transition">
+                      Edit
+                    </button>
+                    <button (click)="$event.stopPropagation(); handleDeleteClick($event, cat.id!)" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="mt-4 flex justify-between items-center">
+      <div class="text-sm text-gray-600">
+        Showing {{ filteredCategories.length }} of {{ totalCategories }} categories
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div *ngIf="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg w-96">
+    <div class="p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
+      <p class="text-gray-600 mb-6">
+        {{
+          categoryIdToDelete !== null
+            ? 'Are you sure you want to delete this category?'
+            : selectedCategories.length > 1
+              ? 'Are you sure you want to delete these ' + selectedCategories.length + ' categories?'
+              : 'Are you sure you want to delete this category?'
+        }}
+        This action cannot be undone.
+      </p>
+      <div class="flex justify-end space-x-3">
+        <button (click)="cancelDelete()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+          Cancel
+        </button>
+        <button (click)="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Category Modal -->
+<div *ngIf="showModal" class="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-50">
+  <div class="relative w-full max-w-lg">
+    <div class="container__category-modal-add-edit relative bg-gray-900 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center p-4 border-b border-gray-700">
+        <h3 class="text-xl font-semibold text-black">
+          {{ editMode ? 'Update Category' : 'New Category' }}
+        </h3>
+        <button (click)="closeModal()" class="text-gray-600 hover:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="p-6">
+        <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input type="text" formControlName="nameCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Type category name">
+            <div *ngIf="categoryForm.get('nameCategory')?.invalid && categoryForm.get('nameCategory')?.touched" class="text-red-500 text-xs mt-1">
+              Category name is required
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Icon Class</label>
+            <input type="text" formControlName="iconClass" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="fa-solid fa-tv">
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button type="button" (click)="closeModal()" class="btn-cancel-edit px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="categoryForm.invalid" class="btn-add px-3 py-2 text-white bg-var(--yellow) rounded-md hover:bg-var(--peridot) transition">
+              {{ editMode ? 'Update' : 'Save' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

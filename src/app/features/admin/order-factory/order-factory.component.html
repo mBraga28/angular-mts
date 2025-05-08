@@ -1,0 +1,118 @@
+<div class="orders-admin">
+  <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <div class="mx-auto max-w-5xl">
+        <div class="gap-4 sm:flex sm:items-center sm:justify-between">
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Orders</h2>
+          <div class="container__order-filter mt-6 gap-4 space-y-4 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
+            <div>
+              <label for="order-type" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Filtrar por status</label>
+              <select id="order-type"
+                [(ngModel)]="selectedStatus"
+                (change)="filterOrders()"
+                class="block w-full min-w-[8rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+                <option value="">All Orders</option>
+                <option *ngFor="let s of statuses" [value]="s">{{ statusLabels[s] }}</option>
+              </select>
+            </div>
+            <span class="inline-block text-gray-500 dark:text-gray-400"> of </span>
+            <div>
+              <label for="duration" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Filtrar por período</label>
+              <select id="duration"
+                [(ngModel)]="selectedPeriod"
+                (change)="filterOrders()"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+                <option value="">This week</option>
+                <option value="this month">This month</option>
+                <option value="last 3 months">Last 3 months</option>
+                <option value="last 6 months">Last 6 months</option>
+                <option value="this year">This year</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 flow-root sm:mt-8">
+          <div class="divide-y divide-gray-200 dark:divide-gray-700">
+            <div *ngFor="let order of filteredOrders" class="flex flex-col gap-y-4 py-6 md:flex-row md:items-center md:gap-x-4 md:gap-y-0 flex-wrap">
+              <dl class="flex-1 min-w-[180px]">
+                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
+                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                  #{{ order.id }}
+                </dd>
+              </dl>
+              <dl class="flex-1 min-w-[180px]">
+                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
+                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                  {{ order.moment | date:'short' }}
+                </dd>
+              </dl>
+              <dl class="flex-1 min-w-[180px]">
+                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price($):</dt>
+                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                  <!-- Assuming getOrderTotal is a method in your component that calculates the total price -->
+                  $ {{ getOrderTotal(order) | number:'1.2-2' }}
+                </dd>
+              </dl>
+              <dl class="flex-1 min-w-[180px]">
+                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
+                <dd
+                  class="me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium"
+                  [ngClass]="{
+                    'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300': order.status === 'WAITING_PAYMENT',
+                    'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300': order.status === 'PAID',
+                    'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300': order.status === 'SHIPPED',
+                    'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300': order.status === 'DELIVERED',
+                    'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300': order.status === 'CANCELLED'
+                  }"
+                >
+                  <ng-container [ngSwitch]="order.status">
+                    <svg *ngSwitchCase="'WAITING_PAYMENT'" class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="10" stroke-width="2" />
+                      <path d="M12 6v6l4 2" stroke-width="2" />
+                    </svg>
+                    <svg *ngSwitchCase="'PAID'" class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M5 13l4 4L19 7" stroke-width="2" />
+                    </svg>
+                    <svg *ngSwitchCase="'SHIPPED'" class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="13" rx="2" stroke-width="2"/>
+                      <path d="M16 3v4M8 3v4" stroke-width="2"/>
+                    </svg>
+                    <svg *ngSwitchCase="'DELIVERED'" class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M9 12l2 2l4 -4" stroke-width="2"/>
+                      <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                    </svg>
+                    <svg *ngSwitchCase="'CANCELED'" class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <line x1="18" y1="6" x2="6" y2="18" stroke-width="2"/>
+                      <line x1="6" y1="6" x2="18" y2="18" stroke-width="2"/>
+                    </svg>
+                  </ng-container>
+                  {{ statusLabels[order.status] }}
+                </dd>
+              </dl>
+              <dl class="flex-1 min-w-[180px]">
+                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                  <button (click)="openStatusModal(order)" class="btn__update-status rounded px-4 py-2">
+                    Update Status
+                  </button>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div *ngIf="modalOrder" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-sm">
+            <h3 class="text-lg font-semibold mb-4">Update Order Status</h3>
+            <select [(ngModel)]="modalStatus" class="w-full mb-4 rounded border p-2">
+              <option *ngFor="let s of statuses" [value]="s">{{ statusLabels[s] }}</option>
+            </select>
+            <div class="flex justify-end gap-2">
+              <button class="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700" (click)="closeStatusModal()">Cancel</button>
+              <button class="btn__save-status px-4 py-2 rounded bg-primary-600 text-white" (click)="confirmStatusUpdate()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

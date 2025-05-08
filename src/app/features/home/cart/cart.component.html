@@ -1,0 +1,32 @@
+<div class="cart__container">
+  <div class="cart-header">
+    <h2 class="cart-title">Cart</h2>
+    <button class="clean-button" *ngIf="itensCart.length > 0; else clearProduct" (click)="clearCart()">Clear</button>
+  </div>
+  <div *ngIf="itensCart.length > 0; else noProduct">
+      <ul>
+        <li *ngFor="let itemCart of itensCart">
+          <div class="item-description">
+             <img [src]="itemCart.image" />
+             <div class="div__name">
+                <p class="product-name">{{ itemCart.nameProduct }}</p>
+                <div class="price__container">
+                  <p class="product-price">Price: {{ itemCart.price | currency}}</p>
+                  </div>
+                <label>
+                    Quantity:
+                    <button class="remove-button" (click)="removeProductCart(itemCart.id)"><i class="fa-solid fa-minus"></i></button>
+                    <input type="number" [(ngModel)]="itemCart.quantity" (change)="calculateTotal()" min="1">
+                    <button class="add-button" (click)="increaseQuantity(itemCart.id)"><i class="fa-solid fa-plus"></i></button>
+                </label>
+             </div>
+          </div>
+          <button class="remove-id__button" (click)="cleanProductCart(itemCart.id)"><i class="fa-regular fa-trash-can"></i></button>
+        </li>
+      </ul>
+      <h2 class="cart-total">Total: {{ total | currency}}</h2>
+      <button class="buy-button" (click)="buy()">Buy</button>
+  </div>
+  <ng-template #clearProduct></ng-template>
+  <ng-template #noProduct>No product has been added to the cart</ng-template>
+</div>

@@ -1,0 +1,39 @@
+
+<section class="home-content">
+  <div class="home__container-products">
+    <h1 class="home__title">Check out our Products</h1>
+    <section class="product-list">
+      <div class="product-list__card" *ngFor="let product of products">
+          <a routerLink="/products/{{product.id}}" class="product-list__link">
+            <img [src]="getImageUrl(product.image)" alt="{{product.nameProduct}}">
+            <h2 class="product-item__name">{{ product.nameProduct }}</h2>
+            <p class="product-item__price">
+                {{ product.price | currency }}
+            </p>
+            <p class="product-item__price-description">
+                {{ product.priceDescription }}
+            </p>
+          </a>
+      </div>
+    </section>
+
+    <a routerLink="/products"><button class="btn-see-more" type="button">See More</button></a>
+  </div>
+  <div class="home__container-categories">
+    <h2>Categories</h2>
+    <div class="categories-carousel">
+      <div class="carousel-wrapper">
+        <div class="carousel-inner">
+          <div class="carousel-item" *ngFor="let category of categories">
+            <div class="category-card">
+              <a [routerLink]="['/products']" [queryParams]="{ id: category.id, nameCategory: category.nameCategory }" class="category-card__link">
+                <i class="fa-solid" [ngClass]="category.iconClass" aria-hidden="true"></i>
+                <div class="category-name">{{ category.nameCategory }}</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

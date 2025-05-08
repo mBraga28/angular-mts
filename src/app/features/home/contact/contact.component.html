@@ -1,0 +1,104 @@
+<div class="contact">
+  <h2 class="contact__title">Contact Us</h2>
+  <section class="contact__container">
+      <form class="contact-form" [formGroup]="formContact" (ngSubmit)="submitForm()">
+          <input
+                type="text"
+                placeholder="Please provide your name"
+                formControlName="name"
+                [class.valid]="formContact.controls['name'].valid"
+                [class.invalid]="formContact.controls['name'].invalid && (formContact.controls['name'].touched || formContact.controls['name'].dirty)"
+          />
+          <div
+            *ngIf="formContact.controls['name'].invalid && (formContact.controls['name'].touched || formContact.controls['name'].dirty)"
+          >
+              <small class="error-message" *ngIf="formContact.controls['name'].hasError('minlength')">
+                This field needs a minimum of 4 characters.
+              </small>
+              <small class="error-message" *ngIf="formContact.controls['name'].hasError('required')">
+                This field needs to be filled in.
+              </small>
+          </div>
+
+          <input
+                type="subject"
+                placeholder="Type the subject"
+                formControlName="subject"
+                [class.valid]="formContact.controls['subject'].valid"
+                [class.invalid]="formContact.controls['subject'].invalid && (formContact.controls['subject'].touched || formContact.controls['subject'].dirty)"
+          />
+          <div
+            *ngIf="formContact.controls['subject'].invalid && (formContact.controls['subject'].touched || formContact.controls['subject'].dirty)"
+          >
+              <small class="error-message" *ngIf="formContact.controls['subject'].hasError('minlength')">
+                This field needs a minimum of 10 characters.
+              </small>
+              <small class="error-message" *ngIf="formContact.controls['subject'].hasError('required')">
+                This field needs to be filled in.
+              </small>
+          </div>
+
+          <input
+              type="tel"
+              placeholder="+000 (00) 0 0000-0000"
+              mask="+000 (00) 0 0000-0000"
+              formControlName="phone"
+              [class.valid]="formContact.controls['phone'].valid"
+              [class.invalid]="formContact.controls['phone'].invalid && (formContact.controls['phone'].touched || formContact.controls['phone'].dirty)"
+          />
+          <div
+            *ngIf="formContact.controls['phone'].invalid && (formContact.controls['phone'].touched || formContact.controls['phone'].dirty)"
+          >
+              <small class="error-message" *ngIf="formContact.controls['phone'].hasError('minlength')">
+                This field must be at least 11 characters long.
+              </small>
+              <small class="error-message" *ngIf="formContact.controls['phone'].hasError('required')">
+                  This field needs to be filled in.
+              </small>
+          </div>
+
+          <input
+              type="email"
+              placeholder="Type your email"
+              formControlName="email"
+              [class.valid]="formContact.controls['email'].valid"
+              [class.invalid]="formContact.controls['email'].invalid && (formContact.controls['name'].touched || formContact.controls['email'].dirty)"
+          />
+          <div
+            *ngIf="formContact.controls['email'].invalid && (formContact.controls['email'].touched || formContact.controls['email'].dirty)"
+          >
+              <small class="error-message" *ngIf="formContact.controls['email'].hasError('email')">
+                This field must be a valid email address.
+              </small>
+              <small class="error-message" *ngIf="formContact.controls['email'].hasError('required')">
+                  This field needs to be filled in.
+              </small>
+          </div>
+
+          <textarea
+              maxlength="300"
+              placeholder="Type your message..."
+              formControlName="message"
+              [class.valid]="formContact.controls['message'].valid"
+              [class.invalid]="formContact.controls['message'].invalid && (formContact.controls['message'].touched || formContact.controls['message'].dirty)"
+          ></textarea>
+          <div
+            *ngIf="formContact.controls['message'].invalid && (formContact.controls['message'].touched || formContact.controls['message'].dirty)"
+          >
+              <small class="error-message" *ngIf="formContact.controls['message'].hasError('minlength')">
+                This field must be at least 20 characters long.
+              </small>
+              <small class="error-message" *ngIf="formContact.controls['name'].hasError('required')">
+                  This field needs to be filled in.
+              </small>
+          </div>
+          <button [disabled]="formContact.invalid" type="submit">Send</button>
+      </form>
+      <address>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126418.20443026046!2d-35.01661819552281!3d-8.043302990718203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab196f94e5408b%3A0xe5800ef782bde3a6!2sRecife%2C%20State%20of%20Pernambuco!5e0!3m2!1sen!2sbr!4v1701529034902!5m2!1sen!2sbr" max-width="600" max-height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <p>Recife - PE, Brazil</p>
+      </address>
+  </section>
+
+</div>

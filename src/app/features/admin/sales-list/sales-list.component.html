@@ -1,0 +1,81 @@
+<div class="container__sales-list p-6 bg-white rounded shadow">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-semibold text-gray-800">Sales Statistics</h2>
+  </div>
+
+  <div *ngIf="salesStats; else loading">
+    <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-4 bg-gray-100 rounded shadow">
+        <div class="text-gray-500 text-sm">Total Sales</div>
+        <div class="text-2xl font-bold">{{ salesStats.totalSales }}</div>
+      </div>
+      <div class="p-4 bg-gray-100 rounded shadow">
+        <div class="text-gray-500 text-sm">Total Revenue</div>
+        <div class="text-2xl font-bold">{{ salesStats.totalRevenue  | currency }}</div>
+      </div>
+      <div class="p-4 bg-gray-100 rounded shadow">
+        <div class="text-gray-500 text-sm">Top Selling Products</div>
+        <ul class="mt-2">
+          <li *ngFor="let p of salesStats.productSales | keyvalue">
+            <span class="font-medium">{{ p.key }}</span>: {{ p.value }} units
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <ng-template #loading>
+    <div class="text-gray-500">Loading statistics...</div>
+  </ng-template>
+</div>
+
+<div class="container__sales-list p-6 bg-white rounded shadow">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-semibold text-gray-800">Sales</h2>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+          <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Total</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <ng-container *ngFor="let order of salesList; let i = index">
+          <tr
+            class="hover:bg-gray-50 cursor-pointer"
+            [class.bg-blue-50]="expandedIndex === i"
+            (click)="toggleRow(i, $event)">
+            <td class="px-4 py-2 whitespace-nowrap">{{ order.id }}</td>
+            <td class="px-4 py-2 whitespace-nowrap">{{ order.moment | date:'short' }}</td>
+            <td class="px-4 py-2 whitespace-nowrap">{{ order.status }}</td>
+            <td class="px-4 py-2 whitespace-nowrap text-right">
+              $ {{ getOrderTotal(order) | number:'1.2-2' }}
+            </td>
+          </tr>
+          <tr *ngIf="expandedIndex === i">
+            <td colspan="5" class="bg-gray-50 px-4 py-4">
+              <div>
+                <strong>Order #{{ order.id }}</strong><br>
+                <strong>Total Price:</strong> R$ {{ getOrderTotal(order) | number:'1.2-2' }}<br>
+                <strong>Date:</strong> {{ order.moment | date:'short' }}<br>
+                <strong>Status:</strong> {{ order.status }}<br>
+                <strong>Items:</strong>
+                <ul class="mt-2">
+                  <li *ngFor="let item of order.items">
+                    Product: {{ item.productId }} |
+                    Quantity: {{ item.quantity }} |
+                    Unit Price: {{ item.price | currency }} |
+                    Subtotal: {{ (item.price * item.quantity) | currency }}
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

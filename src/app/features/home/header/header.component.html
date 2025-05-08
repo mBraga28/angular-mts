@@ -1,0 +1,51 @@
+<header class="main-header">
+    <h1 class="main-header__title">
+      <a routerLink="">
+        <span class="main-header__title--white">
+          <ng-container *ngIf="isSmallScreen; else mtTitle">MT</ng-container>
+          <ng-template #mtTitle>MaboaTech</ng-template>
+        </span>
+        <span class="main-header__title--soft-cyan">
+          <ng-container *ngIf="isSmallScreen; else shopTitle">S</ng-container>
+          <ng-template #shopTitle>Shop</ng-template>
+        </span>
+      </a>
+    </h1>
+    <div class="container-menu" >
+        <nav class="main-header__menu">
+            <ul>
+                <li class="nav-item__product">
+                    <a routerLink="products">
+                      <i class="fa-solid fa-shop"></i>
+                       <b> Product </b>
+                    </a>
+                </li>
+                <li class="nav-item__cart">
+                    <a routerLink="cart">
+                      <i class="fa-solid fa-cart-shopping"></i>
+                       <b> Cart </b>
+                       <span class="badge-cart"> {{ cartService.getCart().length }} </span>
+                    </a>
+                </li>
+                <li class="nav-item__admin">
+                  <a routerLink="/admin">
+                    <i class="fa-solid fa-user-tie">
+                      <b> Admin </b>
+                    </i>
+                  </a>
+                </li>
+                <li class="nav-item__contact">
+                    <a routerLink="contact">
+                      <i class="fa-solid fa-phone"></i>
+                      <b> Contact </b>
+                    </a>
+                </li>
+                <li class="menu__social-media"><a><i class="fa-brands fa-facebook"></i></a></li>
+                <li class="menu__social-media"><a><i class="fa-brands fa-instagram"></i></a></li>
+                <li class="menu__social-media"><a><i class="fa-brands fa-x-twitter"></i></a></li>
+                <li class="menu__social-media"><a><i class="fa-brands fa-linkedin-in"></i></a></li>
+            </ul>
+        </nav>
+        <app-search-bar></app-search-bar>
+    </div>
+</header>

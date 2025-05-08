@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container__nav-bar {
+  background-color: var(--berkeley-blue);
+}
+
+.w-6 {
+  color: var(--white);
+}
+
+.tool__title--white {
+  color: var(--white);
+}
+
+.tool__title--soft-cyan {
+  color: var(--soft-cyan);
+}
+
+.btn-sidebar {
+  color: var(--white);
+}
+
+.btn-sidebar:hover {
+  filter: brightness(1.1);
+  cursor: pointer;
+}
+
+.btn-sidebar:active {
+  filter: brightness(0.9);
+  cursor: pointer;
+}
+
+.btn-notification {
+  color: var(--white);
+}
+
+.btn-notification:hover {
+  filter: brightness(1.1);
+  cursor: pointer;
+}
+
+.btn-notification:active {
+  filter: brightness(0.9);
+  cursor: pointer;
+}
+
+.btn-apps {
+  color: var(--white);
+}
+
+.btn-apps:hover {
+  filter: brightness(1.1);
+  cursor: pointer;
+}
+
+.btn-apps:active {
+  filter: brightness(0.9);
+  cursor: pointer;
+}
+
+@media (min-width: 850px) {
+  .btn-sidebar {
+    display: none;
+  }
+}

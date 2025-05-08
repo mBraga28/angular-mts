@@ -1,0 +1,37 @@
+<div class="filter-bar">
+  <select [(ngModel)]="selectedCategory">
+    <option [ngValue]="null">
+      Select a category...
+    </option>
+    <option *ngFor="let category of categories" [ngValue]="category.id">
+      {{ category.nameCategory }}
+    </option>
+  </select>
+
+  <!-- Price Filter -->
+  <select [(ngModel)]="selectedPriceOrder">
+    <option value="">Price</option>
+    <option value="asc">Lowest Price</option>
+    <option value="desc">Highest Price</option>
+  </select>
+
+  <!-- Alphabetical Filter -->
+  <select [(ngModel)]="selectedAlphaOrder">
+    <option value="">Alphabetical Order</option>
+    <option value="az">A at Z</option>
+    <option value="za">Z at A</option>
+  </select>
+
+  <!-- Best Seller -->
+  <select [(ngModel)]="selectedBestSeller">
+    <option value="">Best Seller?</option>
+    <option value="bestseller">Best Seller</option>
+  </select>
+
+  <button
+    type="button"
+    class="filter-bar__button px-4 py-2 bg-blue-600 text-white rounded transition"
+    (click)="filterProductsByCategory()"
+  >Search
+  </button>
+</div>

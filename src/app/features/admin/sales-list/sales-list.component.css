@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container__sales-list {
+    padding-top: 80px;
+}
+
+@media (max-width: 768px) {
+    .container__sales-list {
+        padding-left: 20px;
+    }
+}

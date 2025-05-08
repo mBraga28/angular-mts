@@ -1,0 +1,42 @@
+.filter-bar {
+  display: flex;
+  padding: 10px;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  select, input {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+.filter-bar__button {
+  background-color: var(--berkeley-blue);
+  color: var(--white);
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+@media (max-width:612px) {
+  .filter-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-bar select {
+    min-width: 0;
+    font-weight: 0.3rem;
+  }
+
+}
+
+@media (max-width: 812px) {
+  .filter-bar__button {
+    height: 25px;
+  }
+
+  .filter-bar select {
+    min-width: 120px;
+    font-weight: 100;
+  }
+}

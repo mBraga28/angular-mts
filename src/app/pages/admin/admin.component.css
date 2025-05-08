@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container__admin {
+  padding-top: 80px;
+}
+
+@media (max-width: 768px) {
+  .container__admin {
+    padding-left: 20px;
+  }
+}

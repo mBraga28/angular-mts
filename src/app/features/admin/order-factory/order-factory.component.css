@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.orders-admin {
+  padding-top: 80px;
+}
+
+.btn__update-status {
+  border: 2px solid var(--venetian-red);
+  color: var(--venetian-red);
+  border-radius: 18px;
+  font-weight: 600;
+}
+
+.btn__save-status {
+  background-color: var(--soft-cyan);
+  color: var(--dark-moderate-blue);
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .orders-admin {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
