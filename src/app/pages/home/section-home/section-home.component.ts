@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ICategory } from 'src/app/core/interfaces/categories';
 import { IProduct } from 'src/app/core/interfaces/products';
 import { CategoryService } from 'src/app/core/services/category.service';
@@ -22,7 +22,8 @@ export class SectionHomeComponent {
   constructor(
       private productsService: ProductsService,
       private categoriesService: CategoryService,
-      private route: ActivatedRoute
+      private route: ActivatedRoute,
+      private router: Router
     ) { }
 
     ngOnInit(): void {
@@ -52,5 +53,9 @@ export class SectionHomeComponent {
 
     getImageUrl(image: string): string {
       return this.productsService.getImageUrl(image);
+    }
+
+    goToProducts(): void {
+      this.router.navigate(['/products']);
     }
 }
